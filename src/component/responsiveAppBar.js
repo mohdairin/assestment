@@ -16,9 +16,10 @@ import AdbIcon from '@mui/icons-material/Adb';
 const pages = ['Zurich'];
 const settings = [];
 
-function ResponsiveAppBar() {
+function ResponsiveAppBar({data}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -123,6 +124,8 @@ function ResponsiveAppBar() {
               </Button>
             ))}
           </Box>
+
+          
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

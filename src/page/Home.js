@@ -1,48 +1,90 @@
 import '../App.css';
-import React, { useEffect } from 'react';
-import CardList from '../component/ActionAreaCard'
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom';
-
-
+import { AutoComplete } from 'antd';
+import { Layout, Menu } from 'antd';
 import {
     getUser,
+    addData
 } from "../action/index";
-import ResponsiveAppBar from '../component/responsiveAppBar';
-import Footer from '../component/Footer';
+import Card from '../component/AntCard';
+
+const { Header, Content, Sider } = Layout;
+const items1 = ['Airin'].map((key) => ({
+    key,
+    label: `BANK ${key}`,
+}));
+
 
 function Home() {
     const loginDetails = useSelector(state => state.loginDetails);
-    const userDataRedux = useSelector(state => state.userData);
-    const navigate = useNavigate();
+    const autoCompleteData = useSelector(state => state.autoCompleteData);
 
+    const [options, setOptions] = useState([]);
+    const onSearch = () => {
+        setOptions(
+            [
+                { value: 'Airin' },
+                { value: 'Luffy' },
+                { value: 'Vegeta' },
+                { value: 'Kakarot' },
+                { value: 'Tarzan' },
+                { value: 'Piccolo' },
+                { value: 'Zoro' },
+                { value: 'Sanji' },
+                { value: 'Boruto' },
+            ],
+        );
+    };
 
+    // const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const onSelect = (data) => {
+        dispatch(addData(data))
+        updateView()
+    };
+
+    const updateView = () => {
+        console.log("Auto", autoCompleteData)
+    }
+
+
     useEffect(() => {
+        console.log("auto complete", autoCompleteData);
         if (loginDetails.length == 0) {
-            console.log("Bypass Login", loginDetails);
-            navigate('/error');
         } else {
             dispatch(getUser());
         }
     }, []);
-    const listItems = [...new Map(userDataRedux?.userList?.map((m) => [m.id, m])).values()].map((userData) =>
-        <CardList data={userData} />
-    );
 
+
+    const listItemsAnt = autoCompleteData?.arr?.map((x) =>
+        <Card data={x} />
+
+    );
 
     return (
         <div>
-            <ResponsiveAppBar />
-            <div style={{
-                textAlign: 'center',
-                marginLeft:'38%'
-            }}>
-            {listItems}
-
+            <Header className="header">
+                <div className="logo" />
+                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
+            </Header>
+            <div style={{textAlign:'center',marginTop:'2px'}}>
+                <AutoComplete
+                    style={{
+                        width: 400,
+                    }}
+                    options={options}
+                    onSelect={onSelect}
+                    onSearch={onSearch}
+                    placeholder="Search"
+                    filterOption={(inputValue, option) =>
+                        option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+                    }
+                />
+                {listItemsAnt}
             </div>
-            <Footer />
         </div>
     );
 }

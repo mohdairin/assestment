@@ -10,10 +10,7 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-
-
   const successLogin = (credentialResponse) => {
-    console.log('Success Madafaker', credentialResponse)
     dispatch(loginCredential(credentialResponse))
     navigate('/home');
   }
@@ -27,17 +24,17 @@ function Login() {
     }}
     >
       <div>
-        <h2 style={{marginLeft:'30px'}}>Zurich App</h2>
+        <h2 style={{ marginLeft: '30px' }}>Zurich App</h2>
         <GoogleLogin
-        onSuccess={credentialResponse => {
-          successLogin(credentialResponse)
-        }}
-        onError={() => {
-          console.log('Login Failed')
-        }}
-      />
+          onSuccess={credentialResponse => {
+            successLogin(credentialResponse)
+          }}
+          onError={() => {
+            console.log('Login Failed')
+          }}
+        />
       </div>
-     
+
     </div>)
 }
 
