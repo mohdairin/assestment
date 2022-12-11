@@ -1,7 +1,8 @@
 import {
   GET_USER,
   LOGIN,
-  ADD_DATA
+  ADD_DATA,
+  GET_DATA
 } from "./types";
 
 import Service from "../services/api";
@@ -19,11 +20,25 @@ export const loginCredential = (login) => async (dispatch) => {
 };
 
 export const addData = (data) => async (dispatch) => {
-  console.log("Add Data",data)
+  console.log("addd Data",data)
   try {
     dispatch({
       type: ADD_DATA,
       payload: data,
+    });
+
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const getData = () => async (dispatch) => {
+  console.log("get Data")
+
+  try {
+    dispatch({
+      type: GET_DATA,
+      payload: {},
     });
 
   } catch (err) {

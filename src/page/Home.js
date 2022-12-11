@@ -2,75 +2,49 @@ import '../App.css';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { AutoComplete } from 'antd';
-import { Layout, Menu } from 'antd';
 import {
     getUser,
-    addData
+    addData,
+    getData,
 } from "../action/index";
 import Card from '../component/AntCard';
-
-const { Header, Content, Sider } = Layout;
-const items1 = ['Airin'].map((key) => ({
-    key,
-    label: `BANK ${key}`,
-}));
+import AntFooter from '../component/AntFooter';
+import AntHeader from '../component/AntHeader';
 
 
 function Home() {
-    const loginDetails = useSelector(state => state.loginDetails);
+    const dispatch = useDispatch();
+  //  const loginDetails = useSelector(state => state.loginDetails);
     const autoCompleteData = useSelector(state => state.autoCompleteData);
 
     const [options, setOptions] = useState([]);
     const onSearch = () => {
         setOptions(
-            [
-                { value: 'Airin' },
-                { value: 'Luffy' },
-                { value: 'Vegeta' },
-                { value: 'Kakarot' },
-                { value: 'Tarzan' },
-                { value: 'Piccolo' },
-                { value: 'Zoro' },
-                { value: 'Sanji' },
-                { value: 'Boruto' },
-            ],
+            autoCompleteData?.data
         );
     };
 
-    // const navigate = useNavigate();
-    const dispatch = useDispatch();
-
     const onSelect = (data) => {
         dispatch(addData(data))
-        updateView()
     };
 
-    const updateView = () => {
-        console.log("Auto", autoCompleteData)
-    }
-
-
     useEffect(() => {
-        console.log("auto complete", autoCompleteData);
-        if (loginDetails.length == 0) {
-        } else {
-            dispatch(getUser());
-        }
+        dispatch(getData());
+        // if (loginDetails.length == 0) {
+        // } else {
+        //     dispatch(getUser());
+        // }
     }, []);
 
 
     const listItemsAnt = autoCompleteData?.arr?.map((x) =>
         <Card data={x} />
-
     );
 
     return (
         <div>
-            <Header className="header">
-                <div className="logo" />
-                <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
-            </Header>
-            <div style={{textAlign:'center',marginTop:'2px'}}>
+           <AntHeader/>
+            <div style={AutoCompleteForm}>
                 <AutoComplete
                     style={{
                         width: 400,
@@ -83,10 +57,23 @@ function Home() {
                         option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                     }
                 />
+            </div>
+            <div style={ScrollView}>
                 {listItemsAnt}
             </div>
+            <AntFooter/>
         </div>
     );
 }
+
+const AutoCompleteForm = {
+    textAlign: 'center', marginTop: '2px'
+}
+
+const ScrollView = {
+    overflowY:'scroll',height:'80vh'
+}
+
+
 
 export default Home;
