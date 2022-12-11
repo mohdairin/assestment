@@ -24,7 +24,7 @@ function Login() {
     }}
     >
       <div>
-        <h2 style={{ marginLeft: '30px' }}>Zurich App</h2>
+        <h2 style={{ marginLeft: '30px' }}>Gmail Login</h2>
         <GoogleLogin
           onSuccess={credentialResponse => {
             successLogin(credentialResponse)
